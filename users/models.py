@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 class Profile(models.Model):
     user=models.OneToOneField(User,models.CASCADE,null=True,blank=True)
@@ -17,6 +18,8 @@ class Profile(models.Model):
     social_twitter = models.CharField(max_length=255, null=True, blank=True)
     social_linkedin = models.CharField(max_length=255, null=True, blank=True)
     social_youtube = models.CharField(max_length=255, null=True, blank=True)
+    social_instagram = models.CharField(max_length=255, null=True, blank=True)
+    social_whatsapp = models.CharField(max_length=255, null=True, blank=True)
     social_website = models.CharField(max_length=255, null=True, blank=True)
     social_telegram = models.CharField(max_length=255, null=True, blank=True)
     phone=models.CharField(max_length=255, null=True, blank=True)
@@ -37,3 +40,4 @@ class Skill(models.Model):
 
     def __str__(self):
         return str(self.name)
+
