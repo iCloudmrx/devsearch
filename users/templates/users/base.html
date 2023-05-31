@@ -15,14 +15,20 @@
   <!-- Dev Search UI -->
   <link rel="stylesheet" href="{% static 'css/app.css' %}" />
 
-  <title>{%block title%}{% endblock title%}</title>
+  <title>{% block title %} {% endblock title %}</title>
 </head>
 <body>
-<header>
-    {% include 'navbar.html' %}
-</header>
-<main>{% block content %} {% endblock content %}</main>
-<footer></footer>
+<main>
+<!--     {% if messages %}-->
+<!--        {% for message in messages %}-->
+<!--            <div class="alert alert&#45;&#45;{{message.tags}}">-->
+<!--                <p class="alert__message">{{message}}</p>-->
+<!--                <button class="alert__close">⨯</button>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+<!--    {% endif %}-->
+   {% block content %} {% endblock content %}
+</main>
 </body>
 <script src="{% static 'uikit/app.js' %}"></script>
 </html>

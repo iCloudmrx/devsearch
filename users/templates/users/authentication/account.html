@@ -1,14 +1,16 @@
 {% extends 'main.html' %}
 {% load static %}
-{% block title %} Profile {% endblock title %}
+{% block title %} Account {% endblock title %}
 {% block content %}
+
   <!-- Main Section -->
-  <main class="profile my-md">
+  <main class="settingsPage profile my-md">
     <div class="container">
       <div class="layout">
         <div class="column column--1of3">
           <div class="card text-center">
             <div class="card__body dev">
+              <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-edit"></i> Edit</a>
               <img class="avatar avatar--xl" src="{{ profile.profile_image.url }}" />
               {% if profile.name %}
               <h2 class="dev__name">{{ profile.name|title }}</h2>
@@ -22,7 +24,6 @@
               {% if profile.phone %}
               <p class="dev__location">{{ profile.phone }}</p>
               {% endif %}
-
               <ul class="dev__social">
                 {% if profile.social_github %}
                 <li>
@@ -96,107 +97,62 @@
               {% endif %}
             </p>
           </div>
-          <div class="devInfo">
+          <div class="settings">
+            <h3 class="settings__title">Skills</h3>
+            <a class="tag tag--pill tag--sub settings__btn tag--lg" href="#"><i class="im im-plus"></i> Add Skill</a>
+          </div>
 
-            <h3 class="devInfo__title">Skills</h3>
-
-            <div class="devInfo__skills">
-              {% for skill in tops %}
-              <div class="devSkill">
-                <h4 class="devSkill__title">{{skill.name}}</h4>
-                <p class="devSkill__info">
+          <table class="settings__table">
+            {% if skills %}
+            {% for skill in skills %}
+            <tr>
+              <td class="settings__tableInfo">
+                <h4>{{skill}}</h4>
+                <p>
+                 {% if skill.description %}
                   {{skill.description}}
+                  {%endif%}
                 </p>
-              </div>
-              {% endfor %}
-              <div class="devSkill">
-                <h4 class="devSkill__title">React</h4>
-                <p class="devSkill__info">
-                  Smet consectetur adipisicing elit. Omnis, nihil? Accusamus aspernatur aut debitis vitae quaerat
-                  nihil fugiat, doloremque nesciunt alias pariatur maxime unde, nam saepe laborum at odit labore.
-                </p>
-              </div>
-              <div class="devSkill">
-                <h4 class="devSkill__title">Express(Nodejs)</h4>
-                <p class="devSkill__info">
-                  Auae error deleniti aperiam enim nisi nesciunt, ratione eveniet eos fuga ad recusandae mollitia!
-                  Facere earum, distinctio nihil recusandae ipsum nesciunt. Possimus, ex. Officia maxime nihil
-                  inventore cum tenetur! Veritatis sapiente libero ducimus nesciunt itaque, placeat inventore sint
-                  blanditiis?
-                </p>
-              </div>
+              </td>
+              <td class="settings__tableActions">
+                <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-edit"></i> Edit</a>
+                <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-x-mark-circle-o"></i>
+                  Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+             {% endif %}
+          </table>
 
-              <h3 class="devInfo__subtitle">Other Skills</h3>
-
-              <div class="devInfo__otherSkills">
-                {% for skill in others %}
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>{{skill.name}}</small>
-                </span>
-                {% endfor %}
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>Vuejs</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>REST API</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>GraphQL</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>TypeScript</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>Webpack</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>NextJS</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>Postgres</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>MongoDB</small>
-                </span>
-              </div>
-
-            </div>
+          <div class="settings">
+            <h3 class="settings__title">Projects</h3>
+            <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'create-project' %}"><i class="im im-plus"></i> Add Project</a>
           </div>
-          <div class="devInfo">
-            <h3 class="devInfo__title">Projects</h3>
-            <div class="grid grid--two">
 
-              {% for project in profile.project_set.all %}
-              <div class="column">
-                <div class="card project">
-                  <a href="{% url 'single-project' project.id %}" class="project">
-                    <img class="project__thumbnail" src="{{project.featured_image.url}}" alt="project thumbnail" />
-                    <div class="card__body">
-                      <h3 class="project__title">{{project.title|truncatewords:4}}</h3>
-                      <p><a class="project__author" href="{% url 'user-profile' project.owner.id %}">By {{project.owner.name|title}}</a></p>
-                      <p class="project--rating">
-                        <span style="font-weight: bold;">{{project.vote_ratio}}%</span> Postitive
-                        Feedback ({{project.vote_total}} Vote{{project.vote_total|pluralize:'s'}})
-                      </p>
+          <table class="settings__table">
+            {% if projects %}
+            {% for project in projects %}
+            <tr>
+              <td class="settings__thumbnail">
+                <a href="{% url 'single-project' project.id %}"><img src="{{project.featured_image.url}}" alt="Project Thumbnail" /></a>
+              </td>
+              <td class="settings__tableInfo">
+                <a href="single-project.html">{{project.title|title}}</a>
+                <p>
+                  {{project.bio}}
+                </p>
+              </td>
+              <td class="settings__tableActions">
+                <a class="tag tag--pill tag--main settings__btn" href="{% url 'update-project' project.id %}"><i class="im im-edit"></i> Edit</a>
+                <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete-project' project.id %}"><i class="im im-x-mark-circle-o"></i>
+                  Delete</a>
+              </td>
+            </tr>
 
-                      <div class="project__tags">
-                         {% for tag in project.tags.all %}
-                          {% if forloop.counter < 4 %}
-                            <span class="tag tag--pill tag--main">
-                                <small>{{tag.name}}</small>
-                            </span>
-                          {% endif %}
-                          {% endfor %}
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-              {% endfor %}
+            {% endfor %}
+             {% endif %}
 
-
-            </div>
-          </div>
+          </table>
         </div>
       </div>
     </div>
