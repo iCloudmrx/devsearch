@@ -48,10 +48,10 @@ def updateProjects(request,pk):
 
 @login_required(login_url='login')
 def deleteProject(request,pk):
-    project=project=Project.objects.get(id=pk)
+    project=Project.objects.get(id=pk)
     if request.method == 'POST':
         project.delete()
         return redirect('project')
     return render(request,'projects/delete_project.html',{
-        'object': project
+        'project': project
     })

@@ -12,7 +12,7 @@
           <p>Update your profile</p>
         </div>
 
-        <form action="{% url 'profile-update' %}" class="form auth__form" method="post">
+        <form action="{% url 'profile-update' %}" class="form auth__form" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           {% for field in form %}
              <div class="form__field">

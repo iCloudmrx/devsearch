@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from users.models import Profile
+from users.models import Profile, Skill
 
 
 class CustomerUserCreationForm(UserCreationForm):
@@ -140,5 +140,26 @@ class ProfileUpdateForm(forms.ModelForm):
             {
                 'class': 'input input--text',
                 'placeholder': 'e.g. +998949082644'
+            }
+        )
+
+class SkillCreationForm(forms.ModelForm):
+    class Meta:
+        model=Skill
+        fields=['name','description']
+
+
+    def __init__(self,*args,**kwargs):
+        super(SkillCreationForm,self).__init__(*args,**kwargs)
+        self.fields['name'].widget.attrs.update(
+            {
+                'class': 'input input--text',
+                'placeholder': 'e.g. JavaScript'
+            }
+        )
+        self.fields['description'].widget.attrs.update(
+            {
+                'class': 'input input--text',
+                'placeholder': 'description'
             }
         )
