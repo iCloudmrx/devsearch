@@ -1,14 +1,20 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
+
+from users.models import Profile
 from .models import Project
 from .forms import ProjectForm
+
 # Create your views here.
 
 def createProject(request):
     if request.method=='POST':
         form = ProjectForm(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            project=form.save(commit=False)
+
+            project.owner=Profile.objects.get(user=request.user)
+            project.save()
             return redirect('project')
     form = ProjectForm()
     return render(request,'projects/project-form.html',{

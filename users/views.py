@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from .models import Profile
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
-from .forms import CustomerUserCreationForm
+from .forms import CustomerUserCreationForm,ProfileUpdateForm
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -53,6 +53,7 @@ def profile(request,pk):
         'others': otherSkill
     })
 
+@login_required(login_url='login')
 def userAccount(request):
     user_profile=Profile.objects.get(user=request.user)
     skills=user_profile.skill_set.all()
@@ -61,4 +62,17 @@ def userAccount(request):
         'profile':user_profile,
         'skills':skills,
         'projects':projects
+    })
+
+@login_required(login_url='login')
+def profileUpdate(request):
+    if request.method=='POST':
+        form=ProfileUpdateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('account')
+        messages.error(request,'Server has error')
+    form=ProfileUpdateForm()
+    return render(request,'users/profile_form.html',{
+        'form':form
     })
