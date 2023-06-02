@@ -1,23 +1,23 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
-from .models import Profile, Skill
+from .models import Profile, Skill,Message
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .forms import CustomerUserCreationForm,ProfileUpdateForm,SkillCreationForm
-from django.contrib.auth.models import User
+
 
 # Create your views here.
 
 
 def loginPage(request):
     if request.method=='POST':
-        username=request.POST['username']
+        username=request.POST['username'].lower()
         password=request.POST['password']
         user=authenticate(request,username=username,password=password)
         if user is not None:
             login(request,user)
             print("Login")
-            return redirect('profiles')
+            return redirect(request.GET['next'] if 'next' in request.GET else 'profiles')
         messages.error(request,'Username or Password is incorrect')
     return render(request,'users/authentication/login.html')
 
@@ -33,7 +33,7 @@ def signup(request):
             user=form.save(commit=False)
             user.username=user.username.lower()
             user.save()
-            #login(request,user)
+            login(request,user)
             print("Signup")
             return redirect('profiles')
         messages.error(request,'validation of form has error')
@@ -56,8 +56,8 @@ def profile(request,pk):
 @login_required(login_url='login')
 def userAccount(request):
     user_profile=Profile.objects.get(user=request.user)
-    skills=user_profile.skill_set.all()
-    projects=user_profile.project_set.all()
+    skills=user_profile.skill_set.all().order_by('-description')
+    projects=user_profile.project_set.all().order_by('-created')
     return render(request,'users/authentication/account.html',{
         'profile':user_profile,
         'skills':skills,
@@ -97,7 +97,8 @@ def skillCreate(request):
 
 @login_required(login_url='login')
 def skillUpdate(request,pk):
-    skill=Skill.objects.get(id=pk)
+    user_profile=request.user.profile
+    skill=user_profile.skill_set.get(id=pk)
     if request.method=='POST':
         form=SkillCreationForm(request.POST,instance=skill)
         if form.is_valid():
@@ -117,4 +118,26 @@ def deleteSkill(request,pk):
         return redirect('account')
     return render(request,'skills/delete.html',{
         'skill': skill
+    })
+
+@login_required(login_url='login')
+def inbox(request):
+    profile=request.user.profile
+    messageResults=profile.messages.all()
+    unreadCount=messageResults.filter(is_read=False).count()
+    return render(request,'inbox/inbox.html',{
+        'messageResults':messageResults,
+        'unreadCount':unreadCount
+    })
+
+
+@login_required(login_url='login')
+def inbox_message(request,pk):
+    profile=request.user.profile
+    messageResult=profile.messages.filter(id=pk)
+    # if messageResult.is_read==False:
+    #     messageResult.is_read=True
+    #     messageResult.save()
+    return render(request,'inbox/message.html',{
+        'message':messageResult,
     })

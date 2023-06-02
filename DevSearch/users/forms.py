@@ -8,20 +8,26 @@ from users.models import Profile, Skill
 class CustomerUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['first_name','last_name','email','password1','password2']
+        fields = ['first_name','last_name','username','email','password1','password2']
 
     def __init__(self,*args,**kwargs):
         super(CustomerUserCreationForm,self).__init__(*args,**kwargs)
         self.fields['first_name'].widget.attrs.update(
             {
                 'class': 'input input--text',
-                'placeholder' : 'e.g. Nurillo'
+                'placeholder': 'e.g. Nurillo'
             }
         )
         self.fields['last_name'].widget.attrs.update(
             {
                 'class': 'input input--text',
                 'placeholder': 'e.g. Mahmudjonov'
+            }
+        )
+        self.fields['username'].widget.attrs.update(
+            {
+                'class': 'input input--text',
+                'placeholder': 'e.g. iCloudMRX'
             }
         )
         self.fields['email'].widget.attrs.update(

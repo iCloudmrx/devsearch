@@ -7,3 +7,4 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ['name','created','updated']
 
 admin.site.register(Project)
+admin.site.register(Review)

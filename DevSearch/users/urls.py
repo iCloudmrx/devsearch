@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import profile,loginPage,logoutPage,signup,userAccount,profileUpdate,skillUpdate,skillCreate,deleteSkill
+from .views import profile,loginPage,logoutPage,signup,userAccount,profileUpdate,skillUpdate,skillCreate,deleteSkill,inbox,inbox_message
 
 urlpatterns=[
     path('signup/',signup,name='signup'),
@@ -11,5 +11,8 @@ urlpatterns=[
     path('skill/create/',skillCreate,name='skill-create'),
     path('skill/update/<str:pk>/',skillUpdate,name='skill-update'),
     path('skill/delete/<str:pk>/',deleteSkill,name='skill-delete'),
+
+    path('inbox/', inbox, name='inbox'),
+    path('inbox/message/<str:pk>/', inbox_message, name='inbox_message'),
 
 ]
