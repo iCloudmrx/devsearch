@@ -1,0 +1,43 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block title %} Password reset sent {% endblock title %}
+{% block content %}
+<style>
+  input[type='text'],
+input[type='email'],
+input[type='password'] {
+  min-width: 24rem;
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-light);
+  transition: all 0.3s ease-in-out;
+  background-color: var(--color-bg);
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='password']:focus,
+input[type='number']:focus,
+input[type='text']:active,
+input[type='email']:active,
+input[type='password']:active,
+input[type='number']:active {
+  outline: none;
+  border: 2px solid var(--color-main);
+}
+</style>
+ <div class="auth">
+      <div class="card">
+        <div class="auth__header text-center">
+          <h3>Password reset complete</h3>
+            <br>
+          <p>Your password has been set. you may go ahead and log in now</p>
+
+          <a href="{% url 'login' %}">Login</a>
+
+        </div>
+
+      </div>
+    </div>
+{% endblock content %}

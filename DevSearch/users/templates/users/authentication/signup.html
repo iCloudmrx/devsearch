@@ -3,7 +3,7 @@
 {% block title %} Sign Up {% endblock title %}
 {% block content %}
  <div class="auth">
-      <div class="card" style="margin-top: 280px">
+      <div class="card" style="margin-top: 380px">
         <div class="auth__header text-center">
           <a href="{% url 'profiles' %}">
             <img src="{% static 'images/icon.svg' %}" alt="icon" />
@@ -16,12 +16,13 @@
           {% csrf_token %}
           {% for field in form %}
              <div class="form__field">
-            <label for="formInput#text">{{field.label}}: </label>
-            {{field}}
-
-               {% for error in field.errors %}
-               <small style="color: #D14D72">error</small>
-               {% endfor %}
+            <label >{{field.label}}: </label>
+                {{field}}
+                 {% if field.errors %}}
+                        {% for error in field.errors %}
+                            <small style="color: #D14D72">{{error}}</small>
+                        {% endfor %}
+                 {% endif %}
           </div>
           {% endfor %}
           <div class="auth__actions">

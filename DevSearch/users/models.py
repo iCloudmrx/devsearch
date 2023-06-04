@@ -59,3 +59,10 @@ class Message(models.Model):
 
     class Meta:
         ordering=['is_read','-created']
+
+
+    @property
+    def is_read_true(self):
+        if self.is_read==False:
+            self.is_read=True
+            self.save()

@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from .models import Profile, Skill,Message
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
-from .forms import CustomerUserCreationForm,ProfileUpdateForm,SkillCreationForm
+from .forms import CustomerUserCreationForm,ProfileUpdateForm,SkillCreationForm,MessageCreationForm
 
 
 # Create your views here.
@@ -134,10 +134,29 @@ def inbox(request):
 @login_required(login_url='login')
 def inbox_message(request,pk):
     profile=request.user.profile
-    messageResult=profile.messages.filter(id=pk)
-    # if messageResult.is_read==False:
-    #     messageResult.is_read=True
-    #     messageResult.save()
+    messageResult=profile.messages.get(id=pk)
+    messageResult.is_read_true
     return render(request,'inbox/message.html',{
         'message':messageResult,
+    })
+
+@login_required(login_url='login')
+def createMessage(request,pk):
+    try:
+        sender=request.user.profile
+    except:
+        sender=None
+    recipient=Profile.objects.get(id=pk)
+    if request.method=='POST':
+        form=MessageCreationForm(request.POST)
+        if form.is_valid():
+            message=form.save(commit=False)
+            message.sender=sender
+            message.recipient=recipient
+            message.save()
+            return redirect('user-profile',pk=pk)
+        messages.error(request,'Server has Error')
+    form=MessageCreationForm()
+    return render(request, 'inbox/create-message.html', {
+        'form': form
     })

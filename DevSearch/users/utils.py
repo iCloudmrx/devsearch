@@ -1,5 +1,7 @@
 from django.db.models import Q
 from .models import Profile,Skill
+from django.core.mail import send_mail
+from django.conf import settings
 
 def searchProfile(request):
     search_query=''
@@ -12,4 +14,6 @@ def searchProfile(request):
         Q(short_intro__icontains=search_query)|
         Q(skill__in=skills)
     )
+
+
     return profiles,search_query

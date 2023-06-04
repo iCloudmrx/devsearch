@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import profile,loginPage,logoutPage,signup,userAccount,profileUpdate,skillUpdate,skillCreate,deleteSkill,inbox,inbox_message
+from .views import profile,loginPage,logoutPage,signup,userAccount,profileUpdate,skillUpdate,skillCreate,deleteSkill,inbox,inbox_message,createMessage
 
 urlpatterns=[
     path('signup/',signup,name='signup'),
@@ -14,5 +14,6 @@ urlpatterns=[
 
     path('inbox/', inbox, name='inbox'),
     path('inbox/message/<str:pk>/', inbox_message, name='inbox_message'),
+    path('profile/message/<str:pk>/', createMessage, name='create-message'),
 
 ]

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from users.models import Profile, Skill
+from users.models import Profile, Skill,Message
 
 
 class CustomerUserCreationForm(UserCreationForm):
@@ -167,5 +167,42 @@ class SkillCreationForm(forms.ModelForm):
             {
                 'class': 'input input--text',
                 'placeholder': 'description'
+            }
+        )
+
+
+class MessageCreationForm(forms.ModelForm):
+    class Meta:
+        model=Message
+        fields=['name','email','subject','body']
+
+        labels = {
+            'name': 'Full Name'
+        }
+
+    def __init__(self,*args,**kwargs):
+        super(MessageCreationForm,self).__init__(*args,**kwargs)
+        self.fields['name'].widget.attrs.update(
+            {
+                'class': 'input input--text',
+                'placeholder': 'e.g. Nurillo Mahmudjonov'
+            }
+        )
+        self.fields['email'].widget.attrs.update(
+            {
+                'class': 'input input--text',
+                'placeholder': 'e.g. user@domain.com'
+            }
+        )
+        self.fields['subject'].widget.attrs.update(
+            {
+                'class': 'input input--text',
+                'placeholder': 'subject of message'
+            }
+        )
+        self.fields['body'].widget.attrs.update(
+            {
+                'class': 'input input--text',
+                'placeholder': 'you write your message here'
             }
         )
