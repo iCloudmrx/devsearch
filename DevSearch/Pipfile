@@ -9,6 +9,9 @@ pillow = "*"
 whitenoise = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
+django-cors-headers = "*"
+django-storages = "*"
+boto3 = "*"
 
 [dev-packages]
 

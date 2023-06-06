@@ -11,7 +11,7 @@
           <div class="card text-center">
             <div class="card__body dev">
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'profile-update' %}"><i class="im im-edit"></i> Edit</a>
-              <img class="avatar avatar--xl" src="{{ profile.profile_image.url }}" />
+              <img class="avatar avatar--xl" src="{{ profile.imageURL }}" />
               {% if profile.name %}
               <h2 class="dev__name">{{ profile.name|title }}</h2>
               {% endif %}
@@ -134,7 +134,7 @@
             {% for project in projects %}
             <tr>
               <td class="settings__thumbnail">
-                <a href="{% url 'single-project' project.id %}"><img src="{{project.featured_image.url}}" alt="Project Thumbnail" /></a>
+                <a href="{% url 'single-project' project.id %}"><img src="{{project.imageURL}}" alt="Project Thumbnail" /></a>
               </td>
               <td class="settings__tableInfo">
                 <a href="single-project.html">{{project.title|title}}</a>

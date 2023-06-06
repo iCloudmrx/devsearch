@@ -52,9 +52,9 @@ class CustomerUserCreationForm(UserCreationForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model=Profile
-        fields=['name','email','username','location','short_intro','bio','profile_image','social_github','social_instagram',
+        fields=['name','email','username','location','short_intro','social_github','social_instagram',
                 'social_twitter','social_linkedin','social_telegram','social_whatsapp','social_website','social_youtube',
-                'phone']
+                'phone','profile_image','bio']
 
     def __init__(self,*args,**kwargs):
         super(ProfileUpdateForm,self).__init__(*args,**kwargs)

@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from .utils import searchProject,paginateObjects
 from users.models import Profile
-from .models import Project
+from .models import Project,Tag
 from .forms import ProjectForm,ReviewForm
 
 # Create your views here.
@@ -11,11 +11,15 @@ from .forms import ProjectForm,ReviewForm
 def createProject(request):
     if request.method=='POST':
         form = ProjectForm(request.POST,request.FILES)
+        new_tags=request.POST.get('newtags').replace(',',' ').split()
         if form.is_valid():
             project=form.save(commit=False)
 
             project.owner=Profile.objects.get(user=request.user)
             project.save()
+            for tag in new_tags:
+                tag, created = Tag.objects.get_or_create(name=tag)
+                project.tags.add(tag)
             return redirect('account')
     form = ProjectForm()
     return render(request,'projects/project-form.html',{
@@ -24,7 +28,7 @@ def createProject(request):
 def projects(request):
     projectsObj,search_query=searchProject(request)
 
-    projectsObj,custom_range=paginateObjects(request,projectsObj,3)
+    projectsObj,custom_range=paginateObjects(request,projectsObj,6)
 
 
 
@@ -65,12 +69,17 @@ def updateProjects(request,pk):
     project=profile.project_set.get(id=pk)
     form = ProjectForm(instance=project)
     if request.method == 'POST':
+        new_tags = request.POST.get('newtags').replace(',', ' ').split()
         form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
+            for tag in new_tags:
+                tag, created = Tag.objects.get_or_create(name=tag)
+                project.tags.add(tag)
             return redirect('project')
     return render(request, 'projects/project-form.html', {
-        'form': form
+        'form': form,
+        'project':project
     })
 
 

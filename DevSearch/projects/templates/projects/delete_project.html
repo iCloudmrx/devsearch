@@ -8,7 +8,7 @@
                 <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
                 <br>
 
-                <form class="form" method="POST" action="{% url 'delete-project' %}">
+                <form class="form" method="POST" action="{% url 'delete-project' project.id%}">
                     {% csrf_token %}
                     <p>Are your sure you want to delete this {{project|title}}?</p>
                     <a class="btn btn--sub btn--lg  my-md" href="{% url 'account' %}">&#x2190 Go Back</a>
