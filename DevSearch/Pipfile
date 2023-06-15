@@ -16,6 +16,7 @@ psycopg2-binary = "*"
 gunicorn = "*"
 celery = "*"
 django-modeltranslation = "*"
+django-decouple = "*"
 
 [dev-packages]
 
