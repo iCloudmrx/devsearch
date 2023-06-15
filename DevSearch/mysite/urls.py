@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
@@ -22,10 +23,6 @@ from django.contrib.auth import views as auth_views
 from .views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='profiles'),
-    path('api/', include('api.urls')),
-    path('projects/', include('projects.urls')),
-    path('users/', include('users.urls')),
 
     path('accounts/reset/password/',auth_views.PasswordResetView.as_view(template_name='users/reset/reset_password.html'),
          name='reset_password'),
@@ -38,7 +35,13 @@ urlpatterns = [
     path('accounts/reset/password/complete/',auth_views.PasswordResetCompleteView.as_view(template_name='users/reset/complete.html'),
          name='password_reset_complete'),
 
-]
+]+i18n_patterns(
+    path('i18n/',include('django.conf.urls.i18n')),
+    path('', home, name='profiles'),
+    path('api/', include('api.urls')),
+    path('projects/', include('projects.urls')),
+    path('users/', include('users.urls')),
+)
 
 urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
